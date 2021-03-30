@@ -31,7 +31,18 @@ public class AddHtmlTemplate {
         String path = FileUtil.templatePath(AddHtmlTemplate.class);
 
         // 获取Jsoup文档对象
-        Document document = HtmlParseUtil.document(path);
+        String content = null;
+        Document document = null;
+        try {
+            // Document document = HtmlParseUtil.document(path);
+            document = HtmlParseUtil.document(path);
+            // content = JAngel.parse(path).content();
+            // document = HtmlParseUtil.document(content);
+        }catch (Exception e){
+            System.out.println("    path:" + path);
+            System.out.println("    content: " + content);
+            e.printStackTrace();
+        }
 
         // 遍历字段
         Element fieldNode = HtmlParseUtil.getJsoup(document, "field");

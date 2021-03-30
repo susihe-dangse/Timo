@@ -29,7 +29,7 @@ public class ServiceImplTemplate {
         container.importClass(JavaParseUtil.getPackage(generate, TierType.DOMAIN));
         container.importClass(JavaParseUtil.getPackage(generate, TierType.SERVICE));
         container.importClass(JavaParseUtil.getPackage(generate, TierType.DAO));
-        container.importClass(StatusEnum.class);
+        container.in(generate.getBasic().getPackagePath()).importClass(StatusEnum.class);
         container.importClass(PageSort.class);
         return container.getImports();
     }
@@ -42,6 +42,7 @@ public class ServiceImplTemplate {
         Expression expression = new Expression();
         expression.label("name", ToolUtil.lowerFirst(generate.getBasic().getTableEntity()));
         expression.label("entity", generate.getBasic().getTableEntity());
+        expression.label("dataSourceName", generate.getBasic().getDataSourceName());
         String path = FileUtil.templatePath(ServiceImplTemplate.class);
 
         // 获取jAngel文档对象

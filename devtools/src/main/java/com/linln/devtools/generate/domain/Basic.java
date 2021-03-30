@@ -15,6 +15,7 @@ public class Basic {
     private String genModule;
     private String genGroup;
     private Long genPMenu;
+    private String dataSourceName;
     private String tablePrefix;
     private String tableName;
     private String tableEntity;

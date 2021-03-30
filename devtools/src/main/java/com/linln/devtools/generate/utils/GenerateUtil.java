@@ -8,6 +8,8 @@ import com.linln.devtools.generate.utils.parser.JavaParseUtil;
 import com.linln.devtools.generate.utils.parser.XmlParseUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.File;
@@ -74,27 +76,45 @@ public class GenerateUtil {
             // 向后台模块添加依赖
             String packagePath = generate.getBasic().getPackagePath();
             String adminPom = projectPath + CodeUtil.ADMIN + "/pom.xml";
+            // System.out.println("pomPath: " + pomPath);
+            // System.out.println("adminPom: " + adminPom);
             try {
                 Document document = XmlParseUtil.document(adminPom);
                 String groupId = packagePath + "." + CodeUtil.MODULES;
                 Elements dependencys = document.getElementsContainingText(groupId);
                 Element lastDependency = dependencys.last();
-                String dependency = XmlParseUtil.getDependency(module);
+                String dependency = XmlParseUtil.getDependency(generate, module);
+                // System.out.println(dependency);
                 if (lastDependency != null && "groupId".equals(lastDependency.tagName())){
                     dependency = CodeUtil.lineBreak + CodeUtil.tabBreak + dependency;
-                    lastDependency.parent().after(dependency);
+                    // lastDependency.parent().after(dependency);
+                    List<Node> nodes = Parser.parseXmlFragment(
+                            dependency, lastDependency.baseUri());
+                    lastDependency.parent().parent().insertChildren(
+                            lastDependency.parent().elementSiblingIndex()+1, nodes );
                 } else {
                     Element des = document.getElementsByTag("dependencies").get(0);
-                    des.append(dependency + CodeUtil.lineBreak + CodeUtil.tabBreak);
+                    // System.out.println(des.ownerDocument().outputSettings().syntax().name());
+                    // des.ownerDocument().outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+                    // des.append(dependency + CodeUtil.lineBreak + CodeUtil.tabBreak);
+                    List<Node> nodes = Parser.parseXmlFragment(dependency, des.baseUri());
+                    des.insertChildren(des.childNodeSize()-1, nodes);
                 }
                 // 处理标签被转为小写问题
                 String html = XmlParseUtil.html(document);
-                html = html.replace("groupid", "groupId");
-                html = html.replace("artifactid", "artifactId");
+                // System.out.println(html);
+                // html = html.replace("groupid", "groupId");
+                // html = html.replace("artifactid", "artifactId");
+                // System.out.println(html);
                 FileUtil.saveWriter(new File(adminPom), html);
             } catch (IOException e) {
+                System.out.println(e.getMessage());
                 e.printStackTrace();
             }
+        }else{
+            System.out.println("moduleList is null or module ("+
+                    module +") is in moduleList;");
+            System.out.println(moduleList);
         }
     }
 

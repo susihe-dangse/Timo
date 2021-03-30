@@ -12,6 +12,8 @@ public class JAngelContainer {
 
     /** 导入的包列表 */
     private Set<String> imports = new TreeSet<>();
+    private String packagePath = "com.linln";
+
 
     /**
      * 获取包列表数据
@@ -62,6 +64,13 @@ public class JAngelContainer {
      * 添加多个包含import代码
      */
     public void importClass(Class<?> clazz){
-        this.importClass(clazz.getName());
+        String className = clazz.getName()
+                .replace("com.linln", packagePath);
+        this.importClass(className);
+    }
+
+    public JAngelContainer in(String packagePath) {
+        this.packagePath = packagePath;
+        return this;
     }
 }

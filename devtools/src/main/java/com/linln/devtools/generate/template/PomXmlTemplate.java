@@ -21,6 +21,7 @@ public class PomXmlTemplate {
     private static String genHtmlBody(Generate generate) throws IOException {
         // 构建数据
         String module = generate.getBasic().getGenModule();
+        String packagePath = generate.getBasic().getPackagePath();
         String path = FileUtil.templatePath(PomXmlTemplate.class);
 
         // 获取Jsoup文档对象
@@ -28,7 +29,9 @@ public class PomXmlTemplate {
 
         // 替换基本数据
         String html = XmlParseUtil.html(document);
-        return html.replace("#{module}", module);
+        html = html.replace("#{module}", module);
+        html = html.replace("#{packagePath}", packagePath);
+        return html;
     }
 
     /**

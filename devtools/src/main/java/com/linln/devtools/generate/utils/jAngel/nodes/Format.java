@@ -4,6 +4,7 @@ import com.linln.devtools.generate.utils.jAngel.JAngel;
 
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ public class Format {
 
     /** 导入的包列表 */
     private Set<String> imports = new TreeSet<>();
+    public String packagePath = "com.linln";
 
     /**
      * 创建一个版式对象
@@ -47,7 +49,9 @@ public class Format {
                 case SIGN_T:
                     Class<?> clazz = (Class<?>) args[index++];
                     if(!clazz.getName().startsWith("java.lang")){
-                        imports.add("import " + clazz.getName() + ";" + JAngel.lineBreak);
+                        imports.add("import " + clazz.getName()
+                                .replace("com\\.linln", packagePath)
+                                + ";" + JAngel.lineBreak);
                     }
                     matcher.appendReplacement(buffer, clazz.getSimpleName());
                     break;
@@ -92,4 +96,22 @@ public class Format {
         return imports;
     }
 
+    /**
+     * 设置 包名
+     * @param packagePath
+     * @return
+     */
+    public Format in(String packagePath) {
+        this.packagePath = packagePath;
+        Consumer<? super String> consumer = new Consumer<String>() {
+            @Override
+            public void accept(String t) {
+                imports.remove(t);
+                imports.add(t.replaceAll("com.linln", packagePath));
+
+            }
+        };
+        imports.forEach(consumer);
+        return this;
+    }
 }

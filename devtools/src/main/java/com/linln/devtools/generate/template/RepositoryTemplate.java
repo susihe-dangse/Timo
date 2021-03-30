@@ -25,7 +25,7 @@ public class RepositoryTemplate {
     private static Set<String> genImports(Generate generate) {
         JAngelContainer container = new JAngelContainer();
         container.importClass(JavaParseUtil.getPackage(generate, TierType.DOMAIN));
-        container.importClass(BaseRepository.class);
+        container.in(generate.getBasic().getPackagePath()).importClass(BaseRepository.class);
         return container.getImports();
     }
 
@@ -37,6 +37,20 @@ public class RepositoryTemplate {
         Expression expression = new Expression();
         expression.label("entity", generate.getBasic().getTableEntity());
         String path = FileUtil.templatePath(RepositoryTemplate.class);
+        // TODO  java.io.FileNotFoundException: file:\F:\project\Timo\Timo\admin\target\Timo-2.0.3.jar!\BOOT-INF\lib\devtools-2.0.3.jar!\com\linln\devtools\generate\template\RepositoryTemplate.tpl (文件名、目录名或卷标语法不正确。)
+        String splitStr = path.substring(5,6);
+        // System.out.println(splitStr);
+        // path = path.replaceAll("admin"+splitStr+"target"+splitStr+".*"+splitStr+"com",
+        //         "devtools"
+        //                 + splitStr + "src"
+        //                 + splitStr + "main"
+        //                 + splitStr + "java"
+        //                 + splitStr + "com");
+        // path = path.replace("file:///", "file:/");
+        // path = path.replace("file:/", "");
+        // path = path.replace("file:"+splitStr, "");
+        // path = "jar:" + path;
+        // System.out.println(path);
 
         // 获取jAngel文档对象
         Document document = JavaParseUtil.document(path, expression, generate, TierType.DAO);

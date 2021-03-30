@@ -1,6 +1,7 @@
 package com.linln.devtools.generate.utils.parser;
 
 import com.linln.devtools.generate.utils.CodeUtil;
+import com.linln.devtools.generate.utils.jAngel.JAngel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
@@ -9,6 +10,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,7 +29,14 @@ public class HtmlParseUtil {
      * @param path 文件路径
      */
     public static Document document(String path) throws IOException {
-        Document document = Jsoup.parse(new File(path), CodeUtil.ENCODE);
+        Document document = null;
+        try {
+            document = Jsoup.parse(new File(path), CodeUtil.ENCODE);
+        }catch (FileNotFoundException fnfe){
+            // path is html str
+            String content = JAngel.readFromZipFile(path);
+            document = Jsoup.parse(content);
+        }
         Document.OutputSettings outputSettings = document.outputSettings();
         outputSettings.prettyPrint(false);
         return document;

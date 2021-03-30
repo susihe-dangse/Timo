@@ -26,7 +26,7 @@ public class ServiceTemplate {
     private static Set<String> genImports(Generate generate) {
         JAngelContainer container = new JAngelContainer();
         container.importClass(JavaParseUtil.getPackage(generate, TierType.DOMAIN));
-        container.importClass(StatusEnum.class);
+        container.in(generate.getBasic().getPackagePath()).importClass(StatusEnum.class);
         return container.getImports();
     }
 

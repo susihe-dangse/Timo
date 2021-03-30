@@ -60,6 +60,12 @@
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-inline">
+                        <label class="layui-form-label">数据源名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="dataSourceName" th:value="${basic.dataSourceName}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
                         <label class="layui-form-label">表前缀</label>
                         <div class="layui-input-inline">
                             <input type="text" name="tablePrefix" th:value="${basic.tablePrefix}" autocomplete="off" class="layui-input">
@@ -71,15 +77,15 @@
                             <input type="text" name="tableName" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                    <div class="layui-inline">
-                        <label class="layui-form-label">实体类</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="tableEntity" autocomplete="off" class="layui-input tableEntity">
-                        </div>
-                    </div>
                 </div>
                 <div class="layui-inline">
                     <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">实体类</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="tableEntity" autocomplete="off" class="layui-input tableEntity">
+                            </div>
+                        </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">访问地址</label>
                             <div class="layui-input-inline">

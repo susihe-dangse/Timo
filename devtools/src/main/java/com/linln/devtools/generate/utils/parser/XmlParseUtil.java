@@ -1,19 +1,19 @@
 package com.linln.devtools.generate.utils.parser;
 
 import com.linln.common.utils.ToolUtil;
+import com.linln.devtools.generate.domain.Generate;
 import com.linln.devtools.generate.utils.CodeUtil;
 import com.linln.devtools.generate.utils.FileUtil;
+import com.linln.devtools.generate.utils.jAngel.JAngel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.ParseSettings;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +42,20 @@ public class XmlParseUtil {
      * @param path 文件路径
      */
     public static Document document(String path) throws IOException {
-        InputStream inputStream = new FileInputStream(path);
-        Document document = Jsoup.parse(inputStream, CodeUtil.ENCODE, "", Parser.xmlParser());
+        Document document = null;
+        try {
+            InputStream inputStream = new FileInputStream(path);
+            document = Jsoup.parse(inputStream, CodeUtil.ENCODE, "",
+                    Parser.xmlParser().settings(ParseSettings.preserveCase));
+        }catch (FileNotFoundException fnfe){
+            String content = JAngel.readFromZipFile(path);
+            // System.out.println("content : " + content);
+            document = Jsoup.parse(content,"",
+                    Parser.xmlParser().settings(ParseSettings.preserveCase));
+        }
         Document.OutputSettings outputSettings = document.outputSettings();
+        // System.out.println(outputSettings.syntax().name());
+        outputSettings.syntax(Document.OutputSettings.Syntax.xml);
         outputSettings.prettyPrint(false);
         return document;
     }
@@ -54,6 +65,9 @@ public class XmlParseUtil {
      * @param document Jsoup文档对象
      */
     public static String html(Document document){
+        Document.OutputSettings outputSettings = document.outputSettings();
+        // System.out.println(outputSettings.syntax().name());
+        // outputSettings.syntax(Document.OutputSettings.Syntax.xml);
         Element project = document.getElementsByTag("project").get(0);
         StringBuilder html = new StringBuilder(docType + "<project");
         List<Attribute> pAttrs = project.attributes().asList();
@@ -111,10 +125,11 @@ public class XmlParseUtil {
     /**
      * 获取依赖模板
      */
-    public static String getDependency(String moduleName){
+    public static String getDependency(Generate generate, String moduleName){
         StringBuilder dependency = new StringBuilder();
         dependency.append(CodeUtil.blank(4)).append("<dependency>").append(LINE_BREAK);
-        dependency.append(CodeUtil.blank(12)).append("<groupId>com.linln.modules</groupId>").append(LINE_BREAK);
+        dependency.append(CodeUtil.blank(12)).append("<groupId>"
+                + generate.getBasic().getPackagePath() +".modules</groupId>").append(LINE_BREAK);
         dependency.append(CodeUtil.blank(12)).append("<artifactId>").append(moduleName).append("</artifactId>").append(LINE_BREAK);
         dependency.append(CodeUtil.blank(12)).append("<version>${project.version}</version>").append(LINE_BREAK);
         dependency.append(CodeUtil.blank(8)).append("</dependency>");

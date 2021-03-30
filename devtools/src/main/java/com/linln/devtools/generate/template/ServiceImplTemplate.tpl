@@ -25,6 +25,7 @@ public class #{entity}ServiceImpl implements #{entity}Service {
      */
     @Override
     @Transactional
+    @DataSource("#{dataSourceName}")
     public #{entity} getById(Long id) {
         return #{name}Repository.findById(id).orElse(null);
     }
@@ -35,6 +36,7 @@ public class #{entity}ServiceImpl implements #{entity}Service {
      * @return 返回分页数据
      */
     @Override
+    @DataSource("#{dataSourceName}")
     public Page<#{entity}> getPageList(Example<#{entity}> example) {
         // 创建分页对象
         PageRequest page = PageSort.pageRequest();
@@ -46,6 +48,7 @@ public class #{entity}ServiceImpl implements #{entity}Service {
      * @param #{name} 实体对象
      */
     @Override
+    @DataSource("#{dataSourceName}")
     public #{entity} save(#{entity} #{name}){
         return #{name}Repository.save(#{name});
     }
@@ -55,6 +58,7 @@ public class #{entity}ServiceImpl implements #{entity}Service {
      */
     @Override
     @Transactional
+    @DataSource("#{dataSourceName}")
     public Boolean updateStatus(StatusEnum statusEnum, List<Long> idList){
         return #{name}Repository.updateStatus(statusEnum.getCode(), idList) > 0;
     }

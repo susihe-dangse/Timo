@@ -12,6 +12,7 @@ layui.use(['element', 'form', 'layer', 'formSelects'], function () {
         genTitle: '',
         genModule: '',
         genPMenu: '',
+        dataSourceName: '',
         tablePrefix: '',
         tableName: '',
         tableEntity: '',
@@ -47,6 +48,13 @@ layui.use(['element', 'form', 'layer', 'formSelects'], function () {
             $(".bindGenModule").text(value);
             defaults.genModule = value;
             updateRequestMapping();
+        }
+    });
+    Object.defineProperty(basic, "dataSourceName", {
+        get: function () { return defaults.dataSourceName},
+        set: function(value) {
+            $(".bindDataSourceName").text(value);
+            defaults.dataSourceName = value;
         }
     });
     Object.defineProperty(basic, "tablePrefix", {
@@ -299,6 +307,7 @@ layui.use(['element', 'form', 'layer', 'formSelects'], function () {
             local.setItem("packagePath", basic.packagePath);
             local.setItem("author", basic.author);
             local.setItem("genModule", basic.genModule);
+            local.setItem("dataSourceName", basic.dataSourceName);
             local.setItem("tablePrefix", basic.tablePrefix);
             local.setItem("moduleType", basic.moduleType);
         }
@@ -320,6 +329,11 @@ layui.use(['element', 'form', 'layer', 'formSelects'], function () {
         var genModule = local.getItem("genModule");
         basic.genModule = genModule;
         $("[name='genModule']").val(genModule);
+    }
+    if(local.getItem("dataSourceName")){
+        var dataSourceName = local.getItem("dataSourceName");
+        basic.dataSourceName = dataSourceName;
+        $("[name='dataSourceName']").val(dataSourceName);
     }
     if(local.getItem("tablePrefix")){
         var tablePrefix = local.getItem("tablePrefix");

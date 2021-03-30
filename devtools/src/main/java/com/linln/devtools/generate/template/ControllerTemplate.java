@@ -34,9 +34,11 @@ public class ControllerTemplate {
      */
     private static Set<String> genImports(Generate generate) {
         JAngelContainer container = new JAngelContainer();
+        String packagePath = generate.getBasic().getPackagePath();
         container.importClass(JavaParseUtil.getPackage(generate, TierType.DOMAIN));
         container.importClass(JavaParseUtil.getPackage(generate, TierType.SERVICE));
         container.importClass(JavaParseUtil.getPackage(generate, TierType.VALID));
+        container.in(packagePath).importClass(StatusEnum.class);
         container.importClass(StatusEnum.class);
         container.importClass(EntityBeanUtil.class);
         container.importClass(ResultVoUtil.class);

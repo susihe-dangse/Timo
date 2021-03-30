@@ -44,11 +44,13 @@ public class Modifier extends Node{
     /**
      * 设置变量类型
      * @param clazz 类对象
+     * @return
      */
     @SuppressWarnings("unchecked")
-    public void setType(Class<?> clazz) {
+    public Modifier setType(Class<?> clazz) {
         importClass(clazz);
         this.type = clazz.getSimpleName();
+        return this;
     }
 
     /**

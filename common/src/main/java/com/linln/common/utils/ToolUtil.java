@@ -61,6 +61,9 @@ public class ToolUtil {
         String filePath = ToolUtil.class.getResource("").getPath();
         String projectPath = ToolUtil.class.getClassLoader().getResource("").getPath();
         StringBuilder path = new StringBuilder();
+        // System.out.println("    filePath: " + filePath);
+        // System.out.println("    projectPath: " + projectPath);
+        // System.out.println("    path: " + path);
 
         if(!filePath.startsWith("file:/")){
             // 开发模式下根路径
@@ -85,6 +88,11 @@ public class ToolUtil {
         }else {
             // jar包启动模式下根路径
             String property = System.getProperty("java.class.path");
+            // System.out.println("    property: " + property);
+            // if(property.matches("admin\\\\target\\\\.*.jar")) {
+            //     // 不可兼容 卡发环境下 jar启动 因为路径下文件会因 开发中心中的配置 而被修改
+            // }else {
+            // }
             int firstIndex = property.lastIndexOf(System.getProperty("path.separator")) + 1;
             int lastIndex = property.lastIndexOf(File.separator) + 1;
             path.append(property, firstIndex, lastIndex);
@@ -97,6 +105,7 @@ public class ToolUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        // System.out.println(rootPath);
         return rootPath.replaceAll("\\\\","/");
     }
 

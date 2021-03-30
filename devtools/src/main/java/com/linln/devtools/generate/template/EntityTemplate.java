@@ -42,6 +42,7 @@ public class EntityTemplate {
         // 获取生成信息
         String prefix = generate.getBasic().getTablePrefix();
         String tableName = generate.getBasic().getTableName();
+        String packagePath = generate.getBasic().getPackagePath();
 
         // 获取jAngel文档对象
         Document document = JavaParseUtil.document(generate, TierType.DOMAIN);
@@ -53,7 +54,7 @@ public class EntityTemplate {
         clazz.addAnnotation(Entity.class);
         clazz.addAnnotation(Table.class, Format.of("name=$S", prefix + tableName));
         clazz.addAnnotation(EntityListeners.class, Format.of("$T.class", AuditingEntityListener.class));
-        clazz.addAnnotation(Where.class, Format.of("clause = $T.NOT_DELETE", StatusUtil.class));
+        clazz.addAnnotation(Where.class, Format.of("clause = $T.NOT_DELETE", StatusUtil.class).in(packagePath));
 
         // 生成类字段
         generate.getFields().forEach(field -> {
@@ -81,7 +82,7 @@ public class EntityTemplate {
                     node.addAnnotation(NotFound.class, Format.of("action=$T.IGNORE", NotFoundAction.class));
                     node.addAnnotation(JoinColumn.class, Format.of("name=$S", "create_by"));
                     node.addAnnotation(JsonIgnore.class);
-                    node.setType(User.class);
+                    node.setType(User.class).in(packagePath);
                     break;
                 case "updateBy":
                     node.addAnnotation(LastModifiedBy.class);
@@ -89,10 +90,10 @@ public class EntityTemplate {
                     node.addAnnotation(NotFound.class, Format.of("action=$T.IGNORE", NotFoundAction.class));
                     node.addAnnotation(JoinColumn.class, Format.of("name=$S", "update_by"));
                     node.addAnnotation(JsonIgnore.class);
-                    node.setType(User.class);
+                    node.setType(User.class).in(packagePath);
                     break;
                 case "status":
-                    node.setValue(Format.of("$T.OK.getCode()", StatusEnum.class));
+                    node.setValue(Format.of("$T.OK.getCode()", StatusEnum.class).in(packagePath));
                     break;
                 default:
             }

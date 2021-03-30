@@ -23,8 +23,8 @@ public class DefaultValue {
     public static Basic getBasic(){
         Basic basic = new Basic();
         basic.setProjectPath(ToolUtil.getProjectPath() + "/");
-        basic.setPackagePath("com.linln");
-        basic.setAuthor("小懒虫");
+        basic.setPackagePath("");
+        basic.setAuthor("");
         basic.setGenModule("order");
         basic.setTablePrefix("or_");
         return basic;

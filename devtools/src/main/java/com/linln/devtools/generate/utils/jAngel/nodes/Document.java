@@ -50,15 +50,22 @@ public class Document extends Node{
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    // @SuppressWarnings("unchecked")
     public String content() {
-        container.importClass(imports);
         StringBuilder packageBuilder = new StringBuilder("package ");
-        packageBuilder.append(this.packageName).append(";").append(JAngel.lineBreak);
-        packageBuilder.append(JAngel.lineBreak);
-        String importAll = container.getImportAll();
-        if(importAll.length() > 0){
-            packageBuilder.append(importAll).append(JAngel.lineBreak);
+        try {
+            container.importClass(imports);
+            packageBuilder.append(this.packageName).append(";").append(JAngel.lineBreak);
+            packageBuilder.append(JAngel.lineBreak);
+            String importAll = container.getImportAll();
+            if (importAll.length() > 0) {
+                packageBuilder.append(importAll).append(JAngel.lineBreak);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+           System.out.println("packageBuilder: " + packageBuilder);
+            // System.out.println("super.content(): " + super.content());
         }
         return packageBuilder + super.content();
     }

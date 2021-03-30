@@ -384,4 +384,27 @@ public class Node<T> {
     public String toString() {
         return content();
     }
+
+    public Node<T> in(String packagePath) {
+        // Consumer<? super String> consumer = new Consumer<String>() {
+        //     @Override
+        //     public void accept(String t) {
+        //         imports.remove(t);
+        //         imports.add(t.replaceAll("com.linln", packagePath));
+        //
+        //     }
+        // };
+        // imports.forEach(consumer);
+        Set<String> ips = new TreeSet<>();
+        if(imports.removeIf((String s)->{
+            if(s.contains("com.linln")){
+                ips.add(s.replace("com.linln", packagePath));
+                return true;
+            }// else{}
+            return false;
+        })){
+            imports.addAll(ips);
+        }
+        return this;
+    }
 }

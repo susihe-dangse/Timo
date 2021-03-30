@@ -4,7 +4,7 @@ server:
 
 ### TIMO配置
 project:
-  captcha-open: false                         #是否开启登录验证码
+  captcha-open:  false                        #是否开启登录验证码
   shiro:
     remember-me-timeout: 7                    #cookie记住登录信息时间，默认7天（天）
     global-session-timeout: 1800              #Session会话超时时间，默认30分钟（秒）
@@ -16,10 +16,15 @@ project:
 spring:
   ## 数据库配置
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/timo?useSSL=false&characterEncoding=utf-8
-    username: root
-    password: root
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/timo?useSSL=false&characterEncoding=utf-8
+#    username: root
+#    password: root
+      driver-class-name: org.h2.Driver
+      type: com.zaxxer.hikari.HikariDataSource
+      url: jdbc:h2:file:./db/timo;AUTO_RECONNECT=TRUE;DB_CLOSE_ON_EXIT=FALSE;IGNORECASE=FALSE;MODE=MySQL;AUTO_SERVER=TRUE;AUTO_SERVER_PORT=9084; # INIT=RUNSCRIPT FROM 'file:sdoc/timo.sql'
+      username: root
+      password: root
 
   ## jpa配置
   jpa:

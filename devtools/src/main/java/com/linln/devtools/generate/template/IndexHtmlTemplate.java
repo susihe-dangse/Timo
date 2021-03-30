@@ -27,7 +27,15 @@ public class IndexHtmlTemplate {
         String path = FileUtil.templatePath(IndexHtmlTemplate.class);
 
         // 获取Jsoup文档对象
-        Document document = HtmlParseUtil.document(path);
+        String content = null;
+        Document document = null;
+        try {
+            document = HtmlParseUtil.document(path);
+        }catch (Exception e){
+            System.out.println("    path:" + path);
+            System.out.println("    content: " + content);
+            e.printStackTrace();
+        }
 
         // 添加/编辑模块入口
         Element addNode = HtmlParseUtil.getJsoup(document, "add");
